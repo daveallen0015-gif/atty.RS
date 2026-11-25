@@ -31,7 +31,6 @@ class SettingController extends Controller
             'fields' => [
                 'nav_brand_prefix' => 'Name prefix',
                 'nav_brand_name' => 'Brand name (blank uses the account name)',
-                'nav_subtitle' => 'Brand subtitle (blank uses the profile title)',
                 'nav_home_label' => 'Home link',
                 'nav_about_label' => 'About link',
                 'nav_services_label' => 'Services link',

@@ -19,7 +19,7 @@
         <a class="public-identity" href="{{ route('home') }}">
             <span class="public-seal" aria-hidden="true"><img src="{{ $content->get('navigation_logo') ? (str_starts_with($content->get('navigation_logo'), 'http') ? $content->get('navigation_logo') : asset('storage/'.$content->get('navigation_logo'))) : asset('images/lawyer-emblem.svg') }}" alt=""></span>
             <span class="identity-divider"></span>
-            <span class="identity-copy"><strong>{{ $content->get('nav_brand_prefix') ?: 'ATTY.' }} {{ $content->get('nav_brand_name') ?: ($lawyer?->name ?? config('app.name')) }}</strong><small>{{ $content->get('nav_subtitle') ?: ($profile?->professional_title ?? 'ATTORNEY-AT-LAW') }}</small></span>
+            <span class="identity-copy"><strong>{{ $content->get('nav_brand_prefix') ?: 'ATTY.' }} {{ $content->get('nav_brand_name') ?: ($lawyer?->name ?? config('app.name')) }}</strong><small>{{ $profile?->professional_title ?? 'ATTORNEY-AT-LAW' }}</small></span>
         </a>
         <nav class="public-nav" aria-label="Main navigation">
             <a href="{{ route('home') }}" class="{{ request()->routeIs('home') ? 'active' : '' }}" @if (request()->routeIs('home')) aria-current="page" @endif>{{ $content->get('nav_home_label') ?: 'Home' }}</a>
