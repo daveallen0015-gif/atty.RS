@@ -16,7 +16,11 @@ return new class extends Migration
             return;
         }
 
+        // TiDB imports can lack AUTO_INCREMENT on existing IDs, so assign this new row explicitly.
+        $nextId = ((int) DB::table('page_contents')->max('id')) + 1;
+
         DB::table('page_contents')->insert([
+            'id' => $nextId,
             'key' => 'nav_brand_name',
             'title' => 'Brand name',
             'content' => '',
