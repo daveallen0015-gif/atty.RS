@@ -37,8 +37,36 @@
     </section>
     <script>
         (() => {
+            const form = document.querySelector('.auth-form');
+            const email = document.getElementById('email');
+            const remember = document.getElementById('remember');
             const password = document.getElementById('password');
             const toggle = document.querySelector('.auth-password-toggle');
+            const rememberedEmailKey = 'lawyer-portal-remembered-email';
+
+            try {
+                const rememberedEmail = localStorage.getItem(rememberedEmailKey);
+                if (rememberedEmail && !email.value) {
+                    email.value = rememberedEmail;
+                    remember.checked = true;
+                }
+            } catch (error) {}
+
+            form.addEventListener('submit', () => {
+                try {
+                    if (remember.checked && email.value.trim()) {
+                        localStorage.setItem(rememberedEmailKey, email.value.trim());
+                    } else {
+                        localStorage.removeItem(rememberedEmailKey);
+                    }
+                } catch (error) {}
+            });
+
+            remember.addEventListener('change', () => {
+                if (!remember.checked) {
+                    try { localStorage.removeItem(rememberedEmailKey); } catch (error) {}
+                }
+            });
 
             toggle.addEventListener('click', () => {
                 const shouldShow = password.type === 'password';

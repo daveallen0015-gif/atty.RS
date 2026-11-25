@@ -213,7 +213,7 @@ body.admin-auth-page { background: #07182d; color: #f5f3ee; }
 .auth-form .form-label { color: #e6c36f; }
 .auth-password-field { position: relative; }
 .auth-password-field .form-control { padding-right: 3rem; }
-.auth-password-toggle { position: absolute; top: 50%; right: .75rem; display: grid; width: 1.75rem; height: 1.75rem; place-items: center; padding: .2rem; transform: translateY(-50%); color: #526078; }
+.auth-password-toggle { position: absolute; top: 50%; right: .75rem; display: grid; width: 1.75rem; height: 1.75rem; place-items: center; padding: .2rem; transform: translateY(-50%); border: 0; background: transparent; box-shadow: none; color: #526078; }
 .auth-password-toggle:hover { color: #10233e; }
 .auth-password-toggle:focus-visible { outline: 2px solid #d7a23d; outline-offset: 2px; }
 .auth-password-toggle svg { width: 1.2rem; height: 1.2rem; fill: none; stroke: currentColor; stroke-linecap: round; stroke-linejoin: round; stroke-width: 1.7; }
