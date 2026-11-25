@@ -126,16 +126,23 @@ class SettingController extends Controller
         $rules['navigation_logo'] = ['nullable', 'image', 'mimes:jpg,jpeg,png,webp', 'max:8192'];
         $validated = $request->validate($rules);
 
+        $now = now();
+        $pageContents = [];
         foreach ($this->fields() as $key => $label) {
-            PageContent::query()->updateOrCreate(
-                ['key' => $key],
-                [
-                    'title' => $label,
-                    'content' => $validated['content'][$key] ?? '',
-                    'updated_by' => $request->user()->id,
-                ],
-            );
+            $pageContents[] = [
+                'key' => $key,
+                'title' => $label,
+                'content' => $validated['content'][$key] ?? '',
+                'updated_by' => $request->user()->id,
+                'created_at' => $now,
+                'updated_at' => $now,
+            ];
         }
+        PageContent::query()->upsert(
+            $pageContents,
+            ['key'],
+            ['title', 'content', 'updated_by', 'updated_at'],
+        );
 
         if ($request->hasFile('hero_background')) {
             $background = PageContent::query()->firstOrNew(['key' => 'hero_background']);
