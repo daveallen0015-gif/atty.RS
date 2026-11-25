@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use Illuminate\Support\Facades\URL;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -19,6 +20,10 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        //
+        // Render terminates HTTPS at its proxy, then forwards HTTP to the app.
+        // Keep generated stylesheet and image URLs on HTTPS in production.
+        if (app()->environment('production')) {
+            URL::forceScheme('https');
+        }
     }
 }
