@@ -5,7 +5,7 @@
 
 @section('content')
     <div class="page-heading"><div><p class="eyebrow">Public profile</p><h1>About the lawyer</h1></div></div>
-    <form method="POST" action="{{ route('admin.profile.update') }}" enctype="multipart/form-data" class="admin-form">
+    <form method="POST" action="{{ route('admin.profile.update') }}" enctype="multipart/form-data" class="admin-form" data-confirm-title="Save profile changes?" data-confirm-message="Your public profile and account details will be updated." data-confirm-button="Yes, save profile">
         @csrf
         @method('PUT')
         <section class="form-section">

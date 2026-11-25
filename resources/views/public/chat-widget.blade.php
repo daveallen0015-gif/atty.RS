@@ -85,6 +85,8 @@
             form.addEventListener('submit', async (event) => {
                 event.preventDefault();
                 if (busy) return;
+                const confirmation = await Swal.fire({ title: 'Start private chat?', text: 'Your message will start a private conversation with the lawyer.', icon: 'question', showCancelButton: true, confirmButtonText: 'Yes, start chat', cancelButtonText: 'No, cancel', reverseButtons: true });
+                if (!confirmation.isConfirmed) return;
                 busy = true;
                 button.disabled = true;
                 const formData = new FormData(form);
@@ -134,6 +136,8 @@
             form.addEventListener('submit', async (event) => {
                 event.preventDefault();
                 if (busy) return;
+                const confirmation = await Swal.fire({ title: 'Send message?', text: 'Your message will be sent in this private conversation.', icon: 'question', showCancelButton: true, confirmButtonText: 'Yes, send message', cancelButtonText: 'No, cancel', reverseButtons: true });
+                if (!confirmation.isConfirmed) return;
                 busy = true;
                 button.disabled = true;
                 try {

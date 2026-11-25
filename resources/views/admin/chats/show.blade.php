@@ -8,7 +8,7 @@
         <div><a class="chat-back-link" href="{{ route('admin.chats.index') }}">← All conversations</a><h1>{{ $conversation->visitor_name }}</h1><p class="eyebrow">{{ $conversation->visitor_email ?: 'Visitor did not provide an email' }}</p></div>
         <div class="chat-admin-actions">
             <span id="conversation-status" class="chat-state chat-state-{{ $conversation->status }}">{{ ucfirst($conversation->status) }}</span>
-            <form id="conversation-status-form" method="POST" action="{{ route('admin.chats.status', $conversation) }}">
+            <form id="conversation-status-form" method="POST" action="{{ route('admin.chats.status', $conversation) }}" data-confirm-title="{{ $conversation->status === 'open' ? 'Close conversation?' : 'Reopen conversation?' }}" data-confirm-message="The conversation status will be changed." data-confirm-button="Yes, continue">
                 @csrf @method('PATCH')
                 <input type="hidden" name="status" value="{{ $conversation->status === 'open' ? 'closed' : 'open' }}">
                 <button class="btn btn-outline-navy">{{ $conversation->status === 'open' ? 'Close conversation' : 'Reopen conversation' }}</button>
@@ -23,7 +23,7 @@
         </div>
         <p id="chat-action-feedback" class="chat-action-feedback" aria-live="polite"></p>
         @if ($conversation->status === 'open')
-            <form id="admin-chat-reply" class="admin-chat-reply" method="POST" action="{{ route('admin.chats.reply', $conversation) }}">
+            <form id="admin-chat-reply" class="admin-chat-reply" method="POST" action="{{ route('admin.chats.reply', $conversation) }}" data-confirm-title="Send reply?" data-confirm-message="Your reply will be sent to this visitor." data-confirm-button="Yes, send reply">
                 @csrf
                 <label class="visually-hidden" for="admin-chat-body">Reply to {{ $conversation->visitor_name }}</label>
                 <textarea id="admin-chat-body" name="body" rows="3" maxlength="5000" placeholder="Write your reply…" required></textarea>

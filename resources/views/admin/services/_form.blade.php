@@ -1,4 +1,4 @@
-<form method="POST" action="{{ $action }}" class="admin-form" enctype="multipart/form-data">
+<form method="POST" action="{{ $action }}" class="admin-form" enctype="multipart/form-data" data-confirm-title="Save service?" data-confirm-message="Your service changes will be saved." data-confirm-button="Yes, save service">
     @csrf
     @if ($method !== 'POST') @method($method) @endif
     <section class="form-section"><div class="row g-4">
@@ -15,5 +15,5 @@
     </div>
 </form>
 @if ($service)
-    <form id="delete-service" method="POST" action="{{ route('admin.services.destroy', $service) }}" onsubmit="return confirm('Delete this service?')">@csrf @method('DELETE')</form>
+    <form id="delete-service" method="POST" action="{{ route('admin.services.destroy', $service) }}" data-confirm-title="Delete service?" data-confirm-message="This service will be permanently deleted. This cannot be undone." data-confirm-button="Yes, delete service" data-confirm-icon="warning">@csrf @method('DELETE')</form>
 @endif

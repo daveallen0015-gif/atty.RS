@@ -1,4 +1,4 @@
-<form method="POST" action="{{ $action }}" enctype="multipart/form-data" class="admin-form">
+<form method="POST" action="{{ $action }}" enctype="multipart/form-data" class="admin-form" data-confirm-title="Save law reference?" data-confirm-message="Your law reference changes will be saved." data-confirm-button="Yes, save law">
     @csrf
     @if ($method !== 'POST') @method($method) @endif
     <section class="form-section"><div class="row g-4">
@@ -16,4 +16,4 @@
     </div></section>
     <div class="d-flex flex-wrap gap-3"><button class="btn btn-ink">Save law</button><a class="text-link align-self-center" href="{{ route('admin.laws.index') }}">Cancel</a>@if ($law)<button form="delete-law" class="btn btn-outline-danger ms-auto">Delete</button>@endif</div>
 </form>
-@if ($law)<form id="delete-law" method="POST" action="{{ route('admin.laws.destroy', $law) }}" onsubmit="return confirm('Delete this law reference?')">@csrf @method('DELETE')</form>@endif
+@if ($law)<form id="delete-law" method="POST" action="{{ route('admin.laws.destroy', $law) }}" data-confirm-title="Delete law reference?" data-confirm-message="This law reference will be permanently deleted. This cannot be undone." data-confirm-button="Yes, delete law" data-confirm-icon="warning">@csrf @method('DELETE')</form>@endif

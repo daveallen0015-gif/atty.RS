@@ -58,5 +58,28 @@
     <button type="button" id="pwa-install" class="pwa-install" hidden>Install App</button>
     <p id="pwa-install-help" class="pwa-install-help" hidden>To install, open your browser menu and choose “Add to Home screen” or “Install app”.</p>
     @include('public.chat-widget')
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script>
+        document.addEventListener('submit', function (event) {
+            const form = event.target;
+            if (!form.matches('form[data-confirm-title]') || form.dataset.confirmed === 'true') return;
+
+            event.preventDefault();
+            Swal.fire({
+                title: form.dataset.confirmTitle,
+                text: form.dataset.confirmMessage || 'Are you sure you want to continue?',
+                icon: 'question',
+                showCancelButton: true,
+                confirmButtonText: form.dataset.confirmButton || 'Yes, continue',
+                cancelButtonText: 'No, cancel',
+                reverseButtons: true
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    form.dataset.confirmed = 'true';
+                    form.requestSubmit(event.submitter);
+                }
+            });
+        }, true);
+    </script>
 </body>
 </html>

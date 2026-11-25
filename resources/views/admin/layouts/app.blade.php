@@ -44,7 +44,7 @@
                 <a class="{{ request()->routeIs('admin.settings.*') ? 'active' : '' }}" href="{{ route('admin.settings.edit') }}" @if(request()->routeIs('admin.settings.*')) aria-current="page" @endif>System Settings</a>
             </div>
         </nav>
-        <form method="POST" action="{{ route('admin.logout') }}" class="admin-logout-form" id="admin-logout-form">
+        <form method="POST" action="{{ route('admin.logout') }}" class="admin-logout-form" data-confirm-title="Sign out?" data-confirm-message="Are you sure you want to sign out?" data-confirm-button="Yes, sign out" data-confirm-icon="question">
             @csrf
             <button type="submit" class="admin-logout">Sign out</button>
         </form>
@@ -56,28 +56,26 @@
     </main>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script>
-        document.getElementById('admin-logout-form').addEventListener('submit', function (event) {
-            if (this.dataset.confirmed === 'true') {
-                return;
-            }
+        document.addEventListener('submit', function (event) {
+            const form = event.target;
+            if (!form.matches('form[data-confirm-title]') || form.dataset.confirmed === 'true') return;
 
             event.preventDefault();
-
             Swal.fire({
-                title: 'Sign out?',
-                text: 'Are you sure you want to sign out?',
-                icon: 'question',
+                title: form.dataset.confirmTitle,
+                text: form.dataset.confirmMessage || 'Are you sure you want to continue?',
+                icon: form.dataset.confirmIcon || 'question',
                 showCancelButton: true,
-                confirmButtonText: 'Yes, sign out',
-                cancelButtonText: 'No, stay signed in',
+                confirmButtonText: form.dataset.confirmButton || 'Yes, continue',
+                cancelButtonText: form.dataset.cancelButton || 'No, cancel',
                 reverseButtons: true
             }).then((result) => {
                 if (result.isConfirmed) {
-                    this.dataset.confirmed = 'true';
-                    this.requestSubmit();
+                    form.dataset.confirmed = 'true';
+                    form.requestSubmit(event.submitter);
                 }
             });
-        });
+        }, true);
     </script>
 </body>
 </html>

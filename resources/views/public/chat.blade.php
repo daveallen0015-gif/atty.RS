@@ -14,7 +14,7 @@
             @if ($conversation?->status === 'closed')
                 <p class="chat-closed-notice">Your previous conversation is closed. You can start a new one below.</p>
             @endif
-            <form method="POST" action="{{ route('chat.start') }}" class="public-contact-form chat-start-form">
+            <form method="POST" action="{{ route('chat.start') }}" class="public-contact-form chat-start-form" data-confirm-title="Start private chat?" data-confirm-message="Your message will start a private conversation with the lawyer." data-confirm-button="Yes, start chat">
                 @csrf
                 <h2>Start a conversation</h2>
                 <div class="row g-3">
@@ -33,7 +33,7 @@
                     @endforeach
                 </div>
                 @if ($conversation->status === 'open')
-                    <form id="visitor-chat-form" class="visitor-chat-form" method="POST" action="{{ route('chat.messages.store', $conversation) }}" data-poll-url="{{ route('chat.messages', $conversation) }}">
+                    <form id="visitor-chat-form" class="visitor-chat-form" method="POST" action="{{ route('chat.messages.store', $conversation) }}" data-poll-url="{{ route('chat.messages', $conversation) }}" data-confirm-title="Send message?" data-confirm-message="Your message will be sent in this private conversation." data-confirm-button="Yes, send message">
                         @csrf
                         <label class="visually-hidden" for="visitor-chat-body">Your message</label>
                         <textarea id="visitor-chat-body" name="body" rows="2" maxlength="5000" placeholder="Write a message…" required></textarea>

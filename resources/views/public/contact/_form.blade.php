@@ -1,4 +1,4 @@
-<form method="POST" action="{{ route('contact.store') }}" class="public-contact-form">
+<form method="POST" action="{{ route('contact.store') }}" class="public-contact-form" data-confirm-title="Send this inquiry?" data-confirm-message="Your message will be sent to the lawyer's office." data-confirm-button="Yes, send inquiry">
     @csrf
     @if (session('status'))<p class="form-success" role="status">{{ session('status') }}</p>@endif
     <div class="row g-4">
