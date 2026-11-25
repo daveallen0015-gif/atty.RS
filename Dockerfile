@@ -27,7 +27,6 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 
 # Production PHP settings, including OPcache.
 COPY docker/php-production.ini /usr/local/etc/php/conf.d/99-law-production.ini
-COPY docker/start-container.sh /usr/local/bin/start-container
 
 COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
 
@@ -39,13 +38,10 @@ COPY . .
 RUN composer install --no-dev --no-interaction --prefer-dist --optimize-autoloader \
     && mkdir -p storage/app/public storage/framework/cache storage/framework/sessions storage/framework/views bootstrap/cache \
     && chown -R www-data:www-data storage bootstrap/cache
-RUN chmod +x /usr/local/bin/start-container
 
 ENV APACHE_DOCUMENT_ROOT=/var/www/html/public \
     APP_ENV=production \
     APP_DEBUG=false \
-    DB_CONNECTION=mysql \
-    DB_PORT=4000 \
     LOG_CHANNEL=stderr \
     LOG_LEVEL=warning \
     MYSQL_ATTR_SSL_CA=/etc/ssl/certs/ca-certificates.crt \
@@ -58,5 +54,5 @@ RUN sed -ri -e 's!/var/www/html!${APACHE_DOCUMENT_ROOT}!g' \
 
 EXPOSE 80
 
-# Migrate TiDB before Apache starts; Render supplies PORT and DB_* at runtime.
-CMD ["/usr/local/bin/start-container"]
+# Apply migrations before starting Apache; Render supplies PORT at runtime.
+CMD ["sh", "-c", "set -eu; app_port=\"${PORT:-80}\"; mkdir -p storage/app/public storage/framework/cache storage/framework/sessions storage/framework/views bootstrap/cache; php artisan storage:link --force; chown -R www-data:www-data storage bootstrap/cache public/storage; sed -i \"s/^Listen 80$/Listen ${app_port}/\" /etc/apache2/ports.conf; sed -i \"s/<VirtualHost \\*:80>/<VirtualHost *:${app_port}>/\" /etc/apache2/sites-available/000-default.conf; php artisan migrate --force; php artisan optimize; exec apache2-foreground"]
