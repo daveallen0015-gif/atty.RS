@@ -5,7 +5,7 @@
 
 @section('content')
     <div class="page-heading"><div><p class="eyebrow">Public website</p><h1>System Settings</h1></div></div>
-    @php($navigationDefaults = ['nav_brand_prefix' => 'ATTY.', 'nav_brand_name' => auth()->user()->name, 'nav_home_label' => 'Home', 'nav_about_label' => 'About Lawyer', 'nav_services_label' => 'Services', 'nav_laws_label' => 'Philippine Laws', 'nav_contact_label' => 'Contact', 'nav_portal_label' => 'Lawyer Portal', 'nav_dashboard_label' => 'Go to Dashboard', 'nav_inquiry_label' => 'Send an Inquiry'])
+    @php($navigationDefaults = ['nav_brand_name' => auth()->user()->name])
     <form method="POST" action="{{ route('admin.settings.update') }}" class="admin-form settings-editor" enctype="multipart/form-data" data-confirm-title="Save website settings?" data-confirm-message="Your website content and settings will be updated." data-confirm-button="Yes, save settings">
         @csrf
         @method('PUT')
@@ -21,15 +21,17 @@
                 <div class="settings-panel-heading"><h2>{{ $group['label'] }}</h2><p>{{ $group['description'] }}</p></div>
                 <div class="row g-4">
                     @foreach ($group['fields'] as $fieldKey => $label)
-                        @php($isLongText = str_ends_with($fieldKey, '_body') || str_ends_with($fieldKey, '_intro') || in_array($fieldKey, ['footer_note', 'site_description'], true))
-                        <div class="col-12"><label for="content_{{ $fieldKey }}" class="form-label">{{ $label }}</label>
-                            @if ($isLongText)
-                                <textarea id="content_{{ $fieldKey }}" name="content[{{ $fieldKey }}]" rows="{{ $fieldKey === 'hero_body' || $fieldKey === 'about_body' ? 5 : 3 }}" class="form-control @error('content.'.$fieldKey) is-invalid @enderror">{{ old('content.'.$fieldKey, $contents->get($fieldKey)) }}</textarea>
-                            @else
-                                <input id="content_{{ $fieldKey }}" name="content[{{ $fieldKey }}]" @if(str_starts_with($fieldKey, 'social_')) type="url" placeholder="https://..." @endif value="{{ old('content.'.$fieldKey, $contents->get($fieldKey, $navigationDefaults[$fieldKey] ?? '')) }}" class="form-control @error('content.'.$fieldKey) is-invalid @enderror">
-                            @endif
-                            @error('content.'.$fieldKey)<div class="invalid-feedback">{{ $message }}</div>@enderror
-                        </div>
+                        @if ($fieldKey !== 'nav_brand_name')
+                            @php($isLongText = str_ends_with($fieldKey, '_body') || str_ends_with($fieldKey, '_intro') || in_array($fieldKey, ['footer_note', 'site_description'], true))
+                            <div class="col-12"><label for="content_{{ $fieldKey }}" class="form-label">{{ $label }}</label>
+                                @if ($isLongText)
+                                    <textarea id="content_{{ $fieldKey }}" name="content[{{ $fieldKey }}]" rows="{{ $fieldKey === 'hero_body' || $fieldKey === 'about_body' ? 5 : 3 }}" class="form-control @error('content.'.$fieldKey) is-invalid @enderror">{{ old('content.'.$fieldKey, $contents->get($fieldKey)) }}</textarea>
+                                @else
+                                    <input id="content_{{ $fieldKey }}" name="content[{{ $fieldKey }}]" @if(str_starts_with($fieldKey, 'social_')) type="url" placeholder="https://..." @endif value="{{ old('content.'.$fieldKey, $contents->get($fieldKey)) }}" class="form-control @error('content.'.$fieldKey) is-invalid @enderror">
+                                @endif
+                                @error('content.'.$fieldKey)<div class="invalid-feedback">{{ $message }}</div>@enderror
+                            </div>
+                        @endif
                     @endforeach
                 </div>
                 @if (!empty($group['background']))
@@ -54,6 +56,15 @@
                         <label for="navigation_logo" class="form-label">Navigation logo image</label>
                         <input id="navigation_logo" type="file" name="navigation_logo" accept="image/jpeg,image/png,image/webp" class="form-control @error('navigation_logo') is-invalid @enderror">
                         @error('navigation_logo')<div class="invalid-feedback">{{ $message }}</div>@enderror
+                    </div>
+                @endif
+                @if ($key === 'home')
+                    <div class="settings-background navigation-brand-settings">
+                        <h3>Navigation brand name</h3>
+                        <p class="form-hint">Set the name shown beside the navigation logo. Leave blank to use the account name.</p>
+                        <label for="content_nav_brand_name" class="form-label">Brand name</label>
+                        <input id="content_nav_brand_name" name="content[nav_brand_name]" value="{{ old('content.nav_brand_name', $contents->get('nav_brand_name', $navigationDefaults['nav_brand_name'])) }}" class="form-control @error('content.nav_brand_name') is-invalid @enderror" maxlength="255">
+                        @error('content.nav_brand_name')<div class="invalid-feedback">{{ $message }}</div>@enderror
                     </div>
                 @endif
             </section>

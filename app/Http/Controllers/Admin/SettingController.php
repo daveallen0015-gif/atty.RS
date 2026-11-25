@@ -14,7 +14,7 @@ class SettingController extends Controller
     private const GROUPS = [
         'home' => [
             'label' => 'Home hero',
-            'description' => 'Edit the opening section and hero background.',
+            'description' => 'Edit the opening section, hero background, and navigation branding.',
             'fields' => [
                 'hero_eyebrow' => 'Opening label',
                 'hero_title' => 'Opening headline',
@@ -22,24 +22,9 @@ class SettingController extends Controller
                 'hero_body' => 'Opening introduction',
                 'hero_button_label' => 'Opening link label',
                 'hero_contact_label' => 'Secondary opening link label',
+                'nav_brand_name' => 'Brand name (blank uses the account name)',
             ],
             'background' => true,
-        ],
-        'navigation' => [
-            'label' => 'Navigation',
-            'description' => 'Edit the public navigation branding, link labels, and inquiry button.',
-            'fields' => [
-                'nav_brand_prefix' => 'Name prefix',
-                'nav_brand_name' => 'Brand name (blank uses the account name)',
-                'nav_home_label' => 'Home link',
-                'nav_about_label' => 'About link',
-                'nav_services_label' => 'Services link',
-                'nav_laws_label' => 'Philippine Laws link',
-                'nav_contact_label' => 'Contact link',
-                'nav_portal_label' => 'Lawyer Portal link',
-                'nav_dashboard_label' => 'Dashboard link (when signed in)',
-                'nav_inquiry_label' => 'Inquiry button',
-            ],
             'navigation_logo' => true,
         ],
         'highlights' => [
@@ -114,9 +99,7 @@ class SettingController extends Controller
         foreach (array_keys($this->fields()) as $key) {
             $rules["content.{$key}"] = ['nullable', 'string', 'max:12000'];
         }
-        foreach (array_keys(self::GROUPS['navigation']['fields']) as $key) {
-            $rules["content.{$key}"] = ['nullable', 'string', 'max:255'];
-        }
+        $rules['content.nav_brand_name'] = ['nullable', 'string', 'max:255'];
         $rules['content.site_description'] = ['nullable', 'string', 'max:500'];
         foreach (['social_facebook', 'social_instagram', 'social_linkedin'] as $key) {
             $rules["content.{$key}"] = ['nullable', 'url:https', 'max:2048'];
