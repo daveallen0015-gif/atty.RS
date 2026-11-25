@@ -51,11 +51,22 @@
     </aside>
     <main class="admin-main">
         <header class="admin-topline"><span>@yield('section', 'Overview')</span><span>{{ auth()->user()->name }}</span></header>
-        @if (session('status'))<div class="alert alert-success auto-dismiss-message" role="status">{{ session('status') }}</div>@endif
         @yield('content')
     </main>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script>
+        @if (session('status'))
+            Swal.fire({
+                toast: true,
+                position: 'top-end',
+                icon: 'success',
+                title: @json(session('status')),
+                showConfirmButton: false,
+                timer: 900,
+                timerProgressBar: true
+            });
+        @endif
+
         document.querySelectorAll('.auto-dismiss-message').forEach((message) => {
             window.setTimeout(() => {
                 message.classList.add('is-dismissing');
