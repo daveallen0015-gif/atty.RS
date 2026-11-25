@@ -1,0 +1,16 @@
+{
+  "id": "/",
+  "name": "Atty. Rochelle Joy Solis",
+  "short_name": "Atty. Rochelle",
+  "description": "Official website of Atty. Rochelle Joy Solis",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "theme_color": "#062664",
+  "background_color": "#FFFFFF",
+  "icons": [
+    { "src": "/images/lawyer-icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any maskable" },
+    { "src": "/images/lawyer-icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any maskable" }
+  ]
+}

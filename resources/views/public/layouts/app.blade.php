@@ -3,12 +3,15 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#062664">
     <meta name="csrf-token" content="{{ csrf_token() }}">
     @if (filled($content->get('site_description')))<meta name="description" content="{{ $content->get('site_description') }}">@endif
     <link rel="icon" type="image/svg+xml" href="{{ asset('images/lawyer-emblem.svg') }}">
+    <link rel="manifest" href="{{ asset('manifest.json') }}">
     <title>@yield('title', config('app.name')) · {{ $lawyer?->name ?? config('app.name') }}</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="{{ asset('css/lawyer.css') }}" rel="stylesheet">
+    <script defer src="{{ asset('js/pwa.js') }}"></script>
 </head>
 <body class="public-page">
     <header class="public-header">
@@ -51,6 +54,8 @@
             @endif
         @endforeach
     </footer>
+    <button type="button" id="pwa-install" class="pwa-install" hidden>Install App</button>
+    <p id="pwa-install-help" class="pwa-install-help" hidden>To install, open your browser menu and choose “Add to Home screen” or “Install app”.</p>
     @include('public.chat-widget')
 </body>
 </html>
