@@ -7,6 +7,7 @@ use App\Models\PageContent;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use App\Services\GitHubImageService;
+use Illuminate\Support\Facades\DB;
 use Illuminate\View\View;
 
 class SettingController extends Controller
@@ -108,23 +109,22 @@ class SettingController extends Controller
         $rules['navigation_logo'] = ['nullable', 'image', 'mimes:jpg,jpeg,png,webp', 'max:8192'];
         $validated = $request->validate($rules);
 
-        $now = now();
-        $pageContents = [];
-        foreach ($this->fields() as $key => $label) {
-            $pageContents[] = [
-                'key' => $key,
-                'title' => $label,
-                'content' => $validated['content'][$key] ?? '',
-                'updated_by' => $request->user()->id,
-                'created_at' => $now,
-                'updated_at' => $now,
-            ];
-        }
-        PageContent::query()->upsert(
-            $pageContents,
-            ['key'],
-            ['title', 'content', 'updated_by', 'updated_at'],
-        );
+        DB::transaction(function () use ($request, $validated) {
+            $fields = $this->fields();
+            $existing = PageContent::query()
+                ->whereIn('key', array_keys($fields))
+                ->get()
+                ->keyBy('key');
+
+            foreach ($fields as $key => $label) {
+                $pageContent = $existing->get($key) ?? new PageContent(['key' => $key]);
+                $pageContent->fill([
+                    'title' => $label,
+                    'content' => $validated['content'][$key] ?? '',
+                    'updated_by' => $request->user()->id,
+                ])->save();
+            }
+        });
 
         if ($request->hasFile('hero_background')) {
             $background = PageContent::query()->firstOrNew(['key' => 'hero_background']);
