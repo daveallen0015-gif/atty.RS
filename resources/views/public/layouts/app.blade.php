@@ -60,6 +60,13 @@
     @include('public.chat-widget')
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script>
+        document.querySelectorAll('.auto-dismiss-message').forEach((message) => {
+            window.setTimeout(() => {
+                message.classList.add('is-dismissing');
+                window.setTimeout(() => message.remove(), 200);
+            }, 800);
+        });
+
         document.addEventListener('submit', function (event) {
             const form = event.target;
             if (!form.matches('form[data-confirm-title]') || form.dataset.confirmed === 'true') return;

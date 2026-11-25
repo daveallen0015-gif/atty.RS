@@ -51,11 +51,18 @@
     </aside>
     <main class="admin-main">
         <header class="admin-topline"><span>@yield('section', 'Overview')</span><span>{{ auth()->user()->name }}</span></header>
-        @if (session('status'))<div class="alert alert-success" role="status">{{ session('status') }}</div>@endif
+        @if (session('status'))<div class="alert alert-success auto-dismiss-message" role="status">{{ session('status') }}</div>@endif
         @yield('content')
     </main>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script>
+        document.querySelectorAll('.auto-dismiss-message').forEach((message) => {
+            window.setTimeout(() => {
+                message.classList.add('is-dismissing');
+                window.setTimeout(() => message.remove(), 200);
+            }, 800);
+        });
+
         document.addEventListener('submit', function (event) {
             const form = event.target;
             if (!form.matches('form[data-confirm-title]') || form.dataset.confirmed === 'true') return;

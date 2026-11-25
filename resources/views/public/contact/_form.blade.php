@@ -1,6 +1,6 @@
 <form method="POST" action="{{ route('contact.store') }}" class="public-contact-form" data-confirm-title="Send this inquiry?" data-confirm-message="Your message will be sent to the lawyer's office." data-confirm-button="Yes, send inquiry">
     @csrf
-    @if (session('status'))<p class="form-success" role="status">{{ session('status') }}</p>@endif
+    @if (session('status'))<p class="form-success auto-dismiss-message" role="status">{{ session('status') }}</p>@endif
     <div class="row g-4">
         <div class="col-md-6"><label for="name" class="form-label">Name</label><input id="name" name="name" value="{{ old('name') }}" class="form-control @error('name') is-invalid @enderror" required autocomplete="name">@error('name')<div class="invalid-feedback">{{ $message }}</div>@enderror</div>
         <div class="col-md-6"><label for="email" class="form-label">Email</label><input id="email" type="email" name="email" value="{{ old('email') }}" class="form-control @error('email') is-invalid @enderror" required autocomplete="email">@error('email')<div class="invalid-feedback">{{ $message }}</div>@enderror</div>

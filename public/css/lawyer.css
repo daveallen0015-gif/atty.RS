@@ -830,3 +830,5 @@ button:disabled, .btn:disabled { cursor: not-allowed; opacity: .62; }
 }
 .pwa-install { position: fixed; z-index: 20; right: 1rem; bottom: 1rem; border: 0; border-radius: 999px; padding: .75rem 1.1rem; background: #062664; color: #fff; box-shadow: 0 3px 14px #0003; font: .9rem Arial, sans-serif; }
 .pwa-install-help { position: fixed; z-index: 20; right: 1rem; bottom: 4rem; max-width: 19rem; padding: .8rem; border-radius: .5rem; background: #fff; color: #062664; box-shadow: 0 3px 14px #0003; font: .85rem/1.4 Arial, sans-serif; }
+.auto-dismiss-message { transition: opacity .2s ease; }
+.auto-dismiss-message.is-dismissing { opacity: 0; }
