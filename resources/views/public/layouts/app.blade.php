@@ -29,9 +29,9 @@
             <a href="{{ route('contact') }}" class="{{ request()->routeIs('contact') ? 'active' : '' }}" @if (request()->routeIs('contact')) aria-current="page" @endif>Contact</a>
         </nav>
         <div class="public-actions">
-            <a class="portal-link" href="{{ route('admin.login') }}" aria-label="Log in to Lawyer Portal">
+            <a class="portal-link" href="{{ auth()->check() ? route('admin.dashboard') : route('admin.login') }}" aria-label="{{ auth()->check() ? 'Go to dashboard' : 'Log in to Lawyer Portal' }}">
                 <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20Zm0 4a3.2 3.2 0 1 1 0 6.4A3.2 3.2 0 0 1 12 6Zm0 13.2a7.15 7.15 0 0 1-5.75-2.9c.05-1.9 3.85-2.95 5.75-2.95s5.7 1.05 5.75 2.95A7.15 7.15 0 0 1 12 19.2Z"/></svg>
-                <span>Lawyer Portal</span>
+                <span>{{ auth()->check() ? 'Go to Dashboard' : 'Lawyer Portal' }}</span>
             </a>
             <a class="consultation-link" href="{{ route('contact') }}"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M2 4h20v16H2V4Zm10 8.2L4 6v12h16V6l-8 6.2Zm0-2.5L19 6H5l7 3.7Z"/></svg>Send an Inquiry</a>
         </div>
