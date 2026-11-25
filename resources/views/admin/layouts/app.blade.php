@@ -44,7 +44,7 @@
                 <a class="{{ request()->routeIs('admin.settings.*') ? 'active' : '' }}" href="{{ route('admin.settings.edit') }}" @if(request()->routeIs('admin.settings.*')) aria-current="page" @endif>System Settings</a>
             </div>
         </nav>
-        <form method="POST" action="{{ route('admin.logout') }}" class="admin-logout-form">
+        <form method="POST" action="{{ route('admin.logout') }}" class="admin-logout-form" id="admin-logout-form">
             @csrf
             <button type="submit" class="admin-logout">Sign out</button>
         </form>
@@ -54,5 +54,30 @@
         @if (session('status'))<div class="alert alert-success" role="status">{{ session('status') }}</div>@endif
         @yield('content')
     </main>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script>
+        document.getElementById('admin-logout-form').addEventListener('submit', function (event) {
+            if (this.dataset.confirmed === 'true') {
+                return;
+            }
+
+            event.preventDefault();
+
+            Swal.fire({
+                title: 'Sign out?',
+                text: 'Are you sure you want to sign out?',
+                icon: 'question',
+                showCancelButton: true,
+                confirmButtonText: 'Yes, sign out',
+                cancelButtonText: 'No, stay signed in',
+                reverseButtons: true
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    this.dataset.confirmed = 'true';
+                    this.requestSubmit();
+                }
+            });
+        });
+    </script>
 </body>
 </html>
