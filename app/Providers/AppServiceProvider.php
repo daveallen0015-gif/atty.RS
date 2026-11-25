@@ -13,12 +13,6 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        $this->app->singleton('migration.repository', function ($app) {
-            $migrations = $app['config']['database.migrations'];
-            $table = is_array($migrations) ? ($migrations['table'] ?? 'migrations') : $migrations;
-
-            return new TidbMigrationRepository($app['db'], $table);
-        });
     }
 
     /**
@@ -26,6 +20,19 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
+        if ($this->app->runningInConsole()) {
+            // Load Laravel's deferred migration provider first, then replace its repository.
+            $this->app->make('migration.repository');
+
+            $migrations = $this->app['config']['database.migrations'];
+            $table = is_array($migrations) ? ($migrations['table'] ?? 'migrations') : $migrations;
+
+            $this->app->instance(
+                'migration.repository',
+                new TidbMigrationRepository($this->app['db'], $table),
+            );
+        }
+
         // Render terminates HTTPS at its proxy, then forwards HTTP to the app.
         // Keep generated stylesheet and image URLs on HTTPS in production.
         if (app()->environment('production')) {
