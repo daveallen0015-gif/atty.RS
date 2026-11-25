@@ -57,12 +57,11 @@
     <script>
         @if (session('status'))
             Swal.fire({
-                toast: true,
-                position: 'top-end',
+                position: 'center',
                 icon: 'success',
                 title: @json(session('status')),
                 showConfirmButton: false,
-                timer: 900,
+                timer: 2000,
                 timerProgressBar: true
             });
         @endif
