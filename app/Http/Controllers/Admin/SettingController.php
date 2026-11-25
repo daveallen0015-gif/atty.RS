@@ -115,9 +115,14 @@ class SettingController extends Controller
                 ->whereIn('key', array_keys($fields))
                 ->get()
                 ->keyBy('key');
+            $nextId = ((int) PageContent::query()->max('id')) + 1;
 
             foreach ($fields as $key => $label) {
-                $pageContent = $existing->get($key) ?? new PageContent(['key' => $key]);
+                $pageContent = $existing->get($key);
+                if (! $pageContent) {
+                    $pageContent = new PageContent(['key' => $key]);
+                    $pageContent->id = $nextId++;
+                }
                 $pageContent->fill([
                     'title' => $label,
                     'content' => $validated['content'][$key] ?? '',
@@ -128,6 +133,9 @@ class SettingController extends Controller
 
         if ($request->hasFile('hero_background')) {
             $background = PageContent::query()->firstOrNew(['key' => 'hero_background']);
+            if (! $background->exists) {
+                $background->id = ((int) PageContent::query()->max('id')) + 1;
+            }
             $previousPath = $background->content;
             $imageUrl = $images->upload($request->file('hero_background'), 'site-backgrounds');
             $background->fill([
@@ -143,6 +151,9 @@ class SettingController extends Controller
 
         if ($request->hasFile('navigation_logo')) {
             $logo = PageContent::query()->firstOrNew(['key' => 'navigation_logo']);
+            if (! $logo->exists) {
+                $logo->id = ((int) PageContent::query()->max('id')) + 1;
+            }
             $previousPath = $logo->content;
             $imageUrl = $images->upload($request->file('navigation_logo'), 'site-branding');
             $logo->fill([

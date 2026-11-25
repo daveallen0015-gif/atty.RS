@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use App\Database\TidbMigrationRepository;
 use Illuminate\Support\Facades\URL;
 use Illuminate\Support\ServiceProvider;
 
@@ -12,7 +13,12 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        //
+        $this->app->singleton('migration.repository', function ($app) {
+            $migrations = $app['config']['database.migrations'];
+            $table = is_array($migrations) ? ($migrations['table'] ?? 'migrations') : $migrations;
+
+            return new TidbMigrationRepository($app['db'], $table);
+        });
     }
 
     /**
