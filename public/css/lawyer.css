@@ -211,6 +211,9 @@ body.admin-auth-page { background: #07182d; color: #f5f3ee; }
 .auth-panel h1 { color: #f4f2ee; }
 .auth-intro, .auth-footnote { color: #c2c9d2; }
 .auth-form .form-label { color: #e6c36f; }
+.auth-remember { display: flex; align-items: center; gap: .55rem; color: #d5dbe3; font: .85rem Arial, sans-serif; }
+.auth-remember input { width: 1rem; height: 1rem; margin: 0; accent-color: #d7a23d; }
+.auth-remember label { cursor: pointer; }
 .btn-ink { border-color: #d7a23d; border-radius: 4px; background: #d7a23d; color: #fff; }
 .btn-ink:hover, .btn-ink:focus { border-color: #e8b64d; background: #e8b64d; color: #07182d; }
 body.admin-page { background: #f7f5ef; color: #10233e; }

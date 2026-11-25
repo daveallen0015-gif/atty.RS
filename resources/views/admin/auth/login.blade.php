@@ -22,6 +22,10 @@
                 <input id="password" type="password" name="password" class="form-control @error('password') is-invalid @enderror" required autocomplete="current-password">
                 @error('password')<div class="invalid-feedback">{{ $message }}</div>@enderror
             </div>
+            <div class="auth-remember mb-4">
+                <input id="remember" type="checkbox" name="remember" value="1" @checked(old('remember'))>
+                <label for="remember">Remember me</label>
+            </div>
             <button type="submit" class="btn btn-ink w-100">Sign in</button>
         </form>
     </section>

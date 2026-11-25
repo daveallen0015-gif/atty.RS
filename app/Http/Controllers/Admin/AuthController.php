@@ -23,8 +23,7 @@ class AuthController extends Controller
             'password' => ['required', 'string'],
         ]);
 
-        // Keep the lawyer signed in across browser restarts until they explicitly log out.
-        if (! Auth::attempt($credentials + ['is_lawyer' => true], true)) {
+        if (! Auth::attempt($credentials + ['is_lawyer' => true], $request->boolean('remember'))) {
             throw ValidationException::withMessages([
                 'email' => __('auth.failed'),
             ]);
