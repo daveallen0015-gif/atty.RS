@@ -5,7 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Storage;
+use App\Services\GitHubImageService;
 use Illuminate\Validation\Rule;
 use Illuminate\View\View;
 
@@ -18,7 +18,7 @@ class ProfileController extends Controller
         ]);
     }
 
-    public function update(Request $request): RedirectResponse
+    public function update(Request $request, GitHubImageService $images): RedirectResponse
     {
         $user = $request->user();
         $validated = $request->validate([
@@ -45,12 +45,10 @@ class ProfileController extends Controller
 
         if ($request->hasFile('photo')) {
             $previousPhoto = $profile->photo_path;
-            $profile->photo_path = $request->file('photo')->store('lawyer-profile', 'public');
+            $newPhoto = $images->upload($request->file('photo'), 'lawyer-profile');
+            $profile->photo_path = $newPhoto;
             $profile->save();
-
-            if ($previousPhoto) {
-                Storage::disk('public')->delete($previousPhoto);
-            }
+            $images->delete($previousPhoto);
         } else {
             $profile->save();
         }

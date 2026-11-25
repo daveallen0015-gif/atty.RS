@@ -6,7 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Service;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Storage;
+use App\Services\GitHubImageService;
 use Illuminate\Support\Str;
 use Illuminate\View\View;
 
@@ -25,13 +25,13 @@ class ServiceController extends Controller
         return view('admin.services.create', ['icons' => Service::ICONS]);
     }
 
-    public function store(Request $request): RedirectResponse
+    public function store(Request $request, GitHubImageService $images): RedirectResponse
     {
         $validated = $this->validatedData($request);
         $validated['slug'] = $this->uniqueSlug($validated['title']);
         $validated['icon'] = $validated['icon'] ?? 'scale';
         $validated['is_published'] = $request->boolean('is_published');
-        $validated['image_path'] = $request->file('image')?->store('service-images', 'public');
+        $validated['image_path'] = $request->hasFile('image') ? $images->upload($request->file('image'), 'service-images') : null;
         unset($validated['image']);
 
         Service::query()->create($validated);
@@ -44,17 +44,16 @@ class ServiceController extends Controller
         return view('admin.services.edit', ['service' => $service, 'icons' => Service::ICONS]);
     }
 
-    public function update(Request $request, Service $service): RedirectResponse
+    public function update(Request $request, Service $service, GitHubImageService $images): RedirectResponse
     {
         $validated = $this->validatedData($request);
         $validated['slug'] = $this->uniqueSlug($validated['title'], $service);
         $validated['icon'] = $validated['icon'] ?? 'scale';
         $validated['is_published'] = $request->boolean('is_published');
         if ($request->hasFile('image')) {
-            if ($service->image_path) {
-                Storage::disk('public')->delete($service->image_path);
-            }
-            $validated['image_path'] = $request->file('image')->store('service-images', 'public');
+            $oldImage = $service->image_path;
+            $validated['image_path'] = $images->upload($request->file('image'), 'service-images');
+            $images->delete($oldImage);
         }
         unset($validated['image']);
 
@@ -63,10 +62,10 @@ class ServiceController extends Controller
         return redirect()->route('admin.services.index')->with('status', 'Service updated.');
     }
 
-    public function destroy(Service $service): RedirectResponse
+    public function destroy(Service $service, GitHubImageService $images): RedirectResponse
     {
         if ($service->image_path) {
-            Storage::disk('public')->delete($service->image_path);
+            $images->delete($service->image_path);
         }
         $service->delete();
 

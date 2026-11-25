@@ -19,7 +19,7 @@
             @else
                 <p>The text of this law has not been added to this library. Please use the source link below to read the original legal document.</p>
             @endif
-            @if ($law->document_path)<a class="law-source-button" href="{{ asset('storage/'.$law->document_path) }}" target="_blank" rel="noopener noreferrer">View uploaded legal document</a>@endif
+            @if ($law->document_path)<a class="law-source-button" href="{{ str_starts_with($law->document_path, 'http') ? $law->document_path : asset('storage/'.$law->document_path) }}" target="_blank" rel="noopener noreferrer">View uploaded legal document</a>@endif
             @if ($law->official_source_url)<a class="law-source-button" href="{{ $law->official_source_url }}" target="_blank" rel="noopener noreferrer">Open source legal document ↗</a>@endif
         </section>
         @if ($law->legal_status)<p class="law-status-note">Status / amendment note: {{ $law->legal_status }}</p>@endif

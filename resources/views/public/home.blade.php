@@ -3,7 +3,7 @@
 @section('title', $content->get('hero_title', config('app.name')))
 
 @section('content')
-    <section class="hero-section" id="home" @if ($content->get('hero_background')) style="--hero-image: url('{{ asset('storage/'.$content->get('hero_background')) }}')" @endif>
+    <section class="hero-section" id="home" @if ($content->get('hero_background')) style="--hero-image: url('{{ str_starts_with($content->get('hero_background'), 'http') ? $content->get('hero_background') : asset('storage/'.$content->get('hero_background')) }}')" @endif>
         <div class="hero-copy">
             @if (filled($content->get('hero_eyebrow')))<p class="public-eyebrow"><span></span>{{ $content->get('hero_eyebrow') }}<span></span></p>@endif
             @if (filled($content->get('hero_title')))<h1>{{ $content->get('hero_title') }}@if (filled($content->get('hero_accent_title')))<em>{{ $content->get('hero_accent_title') }}</em>@endif</h1>@endif
@@ -37,7 +37,7 @@
                 @if (filled($content->get('about_body')))<p>{{ $content->get('about_body') }}</p>@elseif($profile?->short_bio)<p>{{ $profile->short_bio }}</p>@endif
                 @if (filled($content->get('about_link_label')))<a class="editorial-link" href="{{ route('about') }}">{{ $content->get('about_link_label') }} <span aria-hidden="true">&rarr;</span></a>@endif
             </div>
-            @if ($profile?->photo_path)<figure class="about-portrait"><img src="{{ asset('storage/'.$profile->photo_path) }}" alt="Portrait of {{ $lawyer?->name }}"></figure>@endif
+            @if ($profile?->photo_path)<figure class="about-portrait"><img src="{{ str_starts_with($profile->photo_path, 'http') ? $profile->photo_path : asset('storage/'.$profile->photo_path) }}" alt="Portrait of {{ $lawyer?->name }}"></figure>@endif
         </section>
     @endif
 

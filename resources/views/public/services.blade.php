@@ -12,7 +12,7 @@
         <section class="service-card-grid" aria-label="Available legal services">
             @foreach ($services as $service)
                 <article class="service-card">
-                    @if ($service->image_path)<img class="service-card-image" src="{{ asset('storage/'.$service->image_path) }}" alt="{{ $service->title }}">@endif
+                    @if ($service->image_path)<img class="service-card-image" src="{{ str_starts_with($service->image_path, 'http') ? $service->image_path : asset('storage/'.$service->image_path) }}" alt="{{ $service->title }}">@endif
                     <div class="service-card-icon">@include('public.services._icon', ['icon' => $service->icon])</div>
                     <h2>{{ $service->title }}</h2>
                     <p>{{ $service->summary ?: \Illuminate\Support\Str::limit(strip_tags($service->description ?? ''), 165) }}</p>

@@ -7,7 +7,7 @@
         <a class="service-back-link" href="{{ route('services') }}">&larr; Legal Services</a>
         <div class="service-detail-icon">@include('public.services._icon', ['icon' => $service->icon])</div>
         <h1>{{ $service->title }}</h1>
-        @if ($service->image_path)<img class="service-detail-image" src="{{ asset('storage/'.$service->image_path) }}" alt="{{ $service->title }}">@endif
+        @if ($service->image_path)<img class="service-detail-image" src="{{ str_starts_with($service->image_path, 'http') ? $service->image_path : asset('storage/'.$service->image_path) }}" alt="{{ $service->title }}">@endif
         @if ($service->summary)<p class="service-detail-summary">{{ $service->summary }}</p>@endif
     </section>
     <article class="service-detail-body">

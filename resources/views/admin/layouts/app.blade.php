@@ -15,7 +15,7 @@
         <div class="admin-account-summary">
             <a class="admin-account-card" href="{{ route('admin.profile.edit') }}">
                 @if ($adminProfile?->photo_path)
-                    <img src="{{ asset('storage/'.$adminProfile->photo_path) }}" alt="{{ auth()->user()->name }} profile photo">
+                    <img src="{{ str_starts_with($adminProfile->photo_path, 'http') ? $adminProfile->photo_path : asset('storage/'.$adminProfile->photo_path) }}" alt="{{ auth()->user()->name }} profile photo">
                 @else
                     <span class="admin-account-avatar" aria-hidden="true">{{ mb_strtoupper(mb_substr(auth()->user()->name, 0, 1)) }}</span>
                 @endif

@@ -9,7 +9,7 @@
     <link rel="icon" type="image/svg+xml" href="{{ asset('images/lawyer-emblem.svg') }}">
     <link rel="apple-touch-icon" href="{{ asset('images/lawyer-icon-192.png') }}">
     <link rel="manifest" href="{{ asset('manifest.json') }}">
-    <title>@yield('title', config('app.name')) · {{ $lawyer?->name ?? config('app.name') }}</title>
+    <title>@yield('title', config('app.name')) · {{ clawyer?->name ?? config('app.name') }}</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="{{ asset('css/lawyer.css') }}" rel="stylesheet">
     <script defer src="{{ asset('js/pwa.js') }}"></script>
@@ -17,9 +17,9 @@
 <body class="public-page">
     <header class="public-header">
         <a class="public-identity" href="{{ route('home') }}">
-            <span class="public-seal" aria-hidden="true"><img src="{{ $content->get('navigation_logo') ? asset('storage/'.$content->get('navigation_logo')) : asset('images/lawyer-emblem.svg') }}" alt=""></span>
+            <span class="public-seal" aria-hidden="true"><img src="{{ $content->get('navigation_logo') ? (str_starts_with($content->get('navigation_logo'), 'http') ? $content->get('navigation_logo') : asset('storage/'.$content->get('navigation_logo'))) : asset('images/lawyer-emblem.svg') }}" alt=""></span>
             <span class="identity-divider"></span>
-            <span class="identity-copy"><strong>ATTY. {{ $lawyer?->name ?? config('app.name') }}</strong><small>{{ $profile?->professional_title ?? 'ATTORNEY-AT-LAW' }}</small></span>
+            <span class="identity-copy"><strong>ATTY. {{ clawyer?->name ?? config('app.name') }}</strong><small>{{ cprofile?->professional_title ?? 'ATTORNEY-AT-LAW' }}</small></span>
         </a>
         <nav class="public-nav" aria-label="Main navigation">
             <a href="{{ route('home') }}" class="{{ request()->routeIs('home') ? 'active' : '' }}" @if (request()->routeIs('home')) aria-current="page" @endif>Home</a>
@@ -38,9 +38,9 @@
     </header>
     <main>@yield('content')</main>
     <footer class="public-footer">
-        <span>{{ $lawyer?->name ?? config('app.name') }}</span>
+        <span>{{ clawyer?->name ?? config('app.name') }}</span>
         @if (filled($content->get('footer_note')))<span>{{ $content->get('footer_note') }}</span>@endif
-        @if ($profile?->public_email)<a href="mailto:{{ $profile->public_email }}">{{ $profile->public_email }}</a>@endif
+        @if (cprofile?->public_email)<a href="mailto:{{ cprofile->public_email }}">{{ cprofile->public_email }}</a>@endif
         @foreach (['social_facebook' => 'Facebook', 'social_instagram' => 'Instagram', 'social_linkedin' => 'LinkedIn'] as $key => $label)
             @if (filled($content->get($key)))
                 <a class="social-icon-link" href="{{ $content->get($key) }}" target="_blank" rel="noopener noreferrer" aria-label="{{ $label }}" title="{{ $label }}">

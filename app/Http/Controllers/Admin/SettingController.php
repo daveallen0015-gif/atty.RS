@@ -6,7 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\PageContent;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Storage;
+use App\Services\GitHubImageService;
 use Illuminate\View\View;
 
 class SettingController extends Controller
@@ -92,7 +92,7 @@ class SettingController extends Controller
         ]);
     }
 
-    public function update(Request $request): RedirectResponse
+    public function update(Request $request, GitHubImageService $images): RedirectResponse
     {
         $rules = [];
         foreach (array_keys($this->fields()) as $key) {
@@ -120,28 +120,30 @@ class SettingController extends Controller
         if ($request->hasFile('hero_background')) {
             $background = PageContent::query()->firstOrNew(['key' => 'hero_background']);
             $previousPath = $background->content;
+            $imageUrl = $images->upload($request->file('hero_background'), 'site-backgrounds');
             $background->fill([
                 'title' => 'Home hero background',
-                'content' => $request->file('hero_background')->store('site-backgrounds', 'public'),
+                'content' => $imageUrl,
                 'updated_by' => $request->user()->id,
             ])->save();
 
             if ($previousPath) {
-                Storage::disk('public')->delete($previousPath);
+                $images->delete($previousPath);
             }
         }
 
         if ($request->hasFile('navigation_logo')) {
             $logo = PageContent::query()->firstOrNew(['key' => 'navigation_logo']);
             $previousPath = $logo->content;
+            $imageUrl = $images->upload($request->file('navigation_logo'), 'site-branding');
             $logo->fill([
                 'title' => 'Navigation bar logo',
-                'content' => $request->file('navigation_logo')->store('site-branding', 'public'),
+                'content' => $imageUrl,
                 'updated_by' => $request->user()->id,
             ])->save();
 
             if ($previousPath) {
-                Storage::disk('public')->delete($previousPath);
+                $images->delete($previousPath);
             }
         }
 

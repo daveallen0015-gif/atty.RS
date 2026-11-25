@@ -36,7 +36,7 @@
                         <h3>Home background</h3>
                         <p class="form-hint">Choose a wide courthouse or office photo. JPG, PNG, or WebP up to 8 MB.</p>
                         @if ($contents->get('hero_background'))
-                            <figure class="background-preview"><img src="{{ asset('storage/'.$contents->get('hero_background')) }}" alt="Current home background"></figure>
+                            <figure class="background-preview"><img src="{{ str_starts_with($contents->get('hero_background'), 'http') ? $contents->get('hero_background') : asset('storage/'.$contents->get('hero_background')) }}" alt="Current home background"></figure>
                         @endif
                         <label for="hero_background" class="form-label">Home hero background photo</label>
                         <input id="hero_background" type="file" name="hero_background" accept="image/jpeg,image/png,image/webp" class="form-control @error('hero_background') is-invalid @enderror">
@@ -48,7 +48,7 @@
                         <h3>Navigation bar logo</h3>
                         <p class="form-hint">Upload the image shown beside the lawyer's name in the public navigation bar. JPG, PNG, or WebP up to 8 MB.</p>
                         @if ($contents->get('navigation_logo'))
-                            <figure class="navigation-logo-preview"><img src="{{ asset('storage/'.$contents->get('navigation_logo')) }}" alt="Current navigation logo"></figure>
+                            <figure class="navigation-logo-preview"><img src="{{ str_starts_with($contents->get('navigation_logo'), 'http') ? $contents->get('navigation_logo') : asset('storage/'.$contents->get('navigation_logo')) }}" alt="Current navigation logo"></figure>
                         @endif
                         <label for="navigation_logo" class="form-label">Navigation logo image</label>
                         <input id="navigation_logo" type="file" name="navigation_logo" accept="image/jpeg,image/png,image/webp" class="form-control @error('navigation_logo') is-invalid @enderror">

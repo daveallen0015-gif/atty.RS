@@ -5,7 +5,7 @@
 @section('content')
     <section class="interior-heading about-page-heading"><p class="public-eyebrow">{{ $profile?->professional_title }}</p><h1>{{ $content->get('about_heading') }}</h1></section>
     <section class="biography-layout about-profile-layout {{ $profile?->photo_path ? 'has-portrait' : 'no-portrait' }}">
-        @if ($profile?->photo_path)<figure class="biography-portrait"><img src="{{ asset('storage/'.$profile->photo_path) }}" alt="Portrait of {{ $lawyer?->name }}"></figure>@endif
+        @if ($profile?->photo_path)<figure class="biography-portrait"><img src="{{ str_starts_with($profile->photo_path, 'http') ? $profile->photo_path : asset('storage/'.$profile->photo_path) }}" alt="Portrait of {{ $lawyer?->name }}"></figure>@endif
         <div class="biography-copy">
             @if (filled($content->get('about_body')))<p class="standfirst">{{ $content->get('about_body') }}</p>@endif
             @if (filled($profile?->biography))<div class="prose">{{ $profile->biography }}</div>@endif
