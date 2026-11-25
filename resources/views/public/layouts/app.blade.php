@@ -7,6 +7,7 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
     @if (filled($content->get('site_description')))<meta name="description" content="{{ $content->get('site_description') }}">@endif
     <link rel="icon" type="image/svg+xml" href="{{ asset('images/lawyer-emblem.svg') }}">
+    <link rel="apple-touch-icon" href="{{ asset('images/lawyer-icon-192.png') }}">
     <link rel="manifest" href="{{ asset('manifest.json') }}">
     <title>@yield('title', config('app.name')) · {{ $lawyer?->name ?? config('app.name') }}</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">

@@ -1,5 +1,5 @@
-const CACHE = 'rochelle-pwa-v1';
-const CORE = ['/offline.html', '/css/lawyer.css', '/images/lawyer-emblem.svg', '/images/lawyer-icon-192.png', '/images/lawyer-icon-512.png'];
+const CACHE = 'rochelle-pwa-v2';
+const CORE = ['/offline.html', '/css/lawyer.css', '/images/lawyer-emblem.svg', '/images/lawyer-logo.png', '/images/lawyer-icon-192.png', '/images/lawyer-icon-512.png'];
 
 self.addEventListener('install', event => {
   event.waitUntil(caches.open(CACHE).then(cache => cache.addAll(CORE)).then(() => self.skipWaiting()));
