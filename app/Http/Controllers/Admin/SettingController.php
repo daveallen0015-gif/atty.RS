@@ -14,7 +14,7 @@ class SettingController extends Controller
     private const GROUPS = [
         'home' => [
             'label' => 'Home hero',
-            'description' => 'Edit the opening section, hero background, and navigation bar logo.',
+            'description' => 'Edit the opening section and hero background.',
             'fields' => [
                 'hero_eyebrow' => 'Opening label',
                 'hero_title' => 'Opening headline',
@@ -24,6 +24,22 @@ class SettingController extends Controller
                 'hero_contact_label' => 'Secondary opening link label',
             ],
             'background' => true,
+        ],
+        'navigation' => [
+            'label' => 'Navigation',
+            'description' => 'Edit the public navigation branding, link labels, and inquiry button.',
+            'fields' => [
+                'nav_brand_prefix' => 'Name prefix',
+                'nav_subtitle' => 'Brand subtitle (blank uses the profile title)',
+                'nav_home_label' => 'Home link',
+                'nav_about_label' => 'About link',
+                'nav_services_label' => 'Services link',
+                'nav_laws_label' => 'Philippine Laws link',
+                'nav_contact_label' => 'Contact link',
+                'nav_portal_label' => 'Lawyer Portal link',
+                'nav_dashboard_label' => 'Dashboard link (when signed in)',
+                'nav_inquiry_label' => 'Inquiry button',
+            ],
             'navigation_logo' => true,
         ],
         'highlights' => [
@@ -97,6 +113,9 @@ class SettingController extends Controller
         $rules = [];
         foreach (array_keys($this->fields()) as $key) {
             $rules["content.{$key}"] = ['nullable', 'string', 'max:12000'];
+        }
+        foreach (array_keys(self::GROUPS['navigation']['fields']) as $key) {
+            $rules["content.{$key}"] = ['nullable', 'string', 'max:255'];
         }
         $rules['content.site_description'] = ['nullable', 'string', 'max:500'];
         foreach (['social_facebook', 'social_instagram', 'social_linkedin'] as $key) {

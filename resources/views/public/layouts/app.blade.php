@@ -19,21 +19,21 @@
         <a class="public-identity" href="{{ route('home') }}">
             <span class="public-seal" aria-hidden="true"><img src="{{ $content->get('navigation_logo') ? (str_starts_with($content->get('navigation_logo'), 'http') ? $content->get('navigation_logo') : asset('storage/'.$content->get('navigation_logo'))) : asset('images/lawyer-emblem.svg') }}" alt=""></span>
             <span class="identity-divider"></span>
-            <span class="identity-copy"><strong>ATTY. {{ $lawyer?->name ?? config('app.name') }}</strong><small>{{ $profile?->professional_title ?? 'ATTORNEY-AT-LAW' }}</small></span>
+            <span class="identity-copy"><strong>{{ $content->get('nav_brand_prefix') ?: 'ATTY.' }} {{ $lawyer?->name ?? config('app.name') }}</strong><small>{{ $content->get('nav_subtitle') ?: ($profile?->professional_title ?? 'ATTORNEY-AT-LAW') }}</small></span>
         </a>
         <nav class="public-nav" aria-label="Main navigation">
-            <a href="{{ route('home') }}" class="{{ request()->routeIs('home') ? 'active' : '' }}" @if (request()->routeIs('home')) aria-current="page" @endif>Home</a>
-            <a href="{{ route('about') }}" class="{{ request()->routeIs('about') ? 'active' : '' }}" @if (request()->routeIs('about')) aria-current="page" @endif>About Lawyer</a>
-            <a href="{{ route('services') }}" class="{{ request()->routeIs('services', 'services.show') ? 'active' : '' }}" @if (request()->routeIs('services', 'services.show')) aria-current="page" @endif>Services</a>
-            <a href="{{ route('laws.index') }}" class="{{ request()->routeIs('laws.*') ? 'active' : '' }}" @if (request()->routeIs('laws.*')) aria-current="page" @endif>Philippine Laws</a>
-            <a href="{{ route('contact') }}" class="{{ request()->routeIs('contact') ? 'active' : '' }}" @if (request()->routeIs('contact')) aria-current="page" @endif>Contact</a>
+            <a href="{{ route('home') }}" class="{{ request()->routeIs('home') ? 'active' : '' }}" @if (request()->routeIs('home')) aria-current="page" @endif>{{ $content->get('nav_home_label') ?: 'Home' }}</a>
+            <a href="{{ route('about') }}" class="{{ request()->routeIs('about') ? 'active' : '' }}" @if (request()->routeIs('about')) aria-current="page" @endif>{{ $content->get('nav_about_label') ?: 'About Lawyer' }}</a>
+            <a href="{{ route('services') }}" class="{{ request()->routeIs('services', 'services.show') ? 'active' : '' }}" @if (request()->routeIs('services', 'services.show')) aria-current="page" @endif>{{ $content->get('nav_services_label') ?: 'Services' }}</a>
+            <a href="{{ route('laws.index') }}" class="{{ request()->routeIs('laws.*') ? 'active' : '' }}" @if (request()->routeIs('laws.*')) aria-current="page" @endif>{{ $content->get('nav_laws_label') ?: 'Philippine Laws' }}</a>
+            <a href="{{ route('contact') }}" class="{{ request()->routeIs('contact') ? 'active' : '' }}" @if (request()->routeIs('contact')) aria-current="page" @endif>{{ $content->get('nav_contact_label') ?: 'Contact' }}</a>
         </nav>
         <div class="public-actions">
-            <a class="portal-link" href="{{ auth()->check() ? route('admin.dashboard') : route('admin.login') }}" aria-label="{{ auth()->check() ? 'Go to dashboard' : 'Log in to Lawyer Portal' }}">
+            <a class="portal-link" href="{{ auth()->check() ? route('admin.dashboard') : route('admin.login') }}" aria-label="{{ auth()->check() ? ($content->get('nav_dashboard_label') ?: 'Go to Dashboard') : ($content->get('nav_portal_label') ?: 'Log in to Lawyer Portal') }}">
                 <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20Zm0 4a3.2 3.2 0 1 1 0 6.4A3.2 3.2 0 0 1 12 6Zm0 13.2a7.15 7.15 0 0 1-5.75-2.9c.05-1.9 3.85-2.95 5.75-2.95s5.7 1.05 5.75 2.95A7.15 7.15 0 0 1 12 19.2Z"/></svg>
-                <span>{{ auth()->check() ? 'Go to Dashboard' : 'Lawyer Portal' }}</span>
+                <span>{{ auth()->check() ? ($content->get('nav_dashboard_label') ?: 'Go to Dashboard') : ($content->get('nav_portal_label') ?: 'Lawyer Portal') }}</span>
             </a>
-            <a class="consultation-link" href="{{ route('contact') }}"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M2 4h20v16H2V4Zm10 8.2L4 6v12h16V6l-8 6.2Zm0-2.5L19 6H5l7 3.7Z"/></svg>Send an Inquiry</a>
+            <a class="consultation-link" href="{{ route('contact') }}"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M2 4h20v16H2V4Zm10 8.2L4 6v12h16V6l-8 6.2Zm0-2.5L19 6H5l7 3.7Z"/></svg>{{ $content->get('nav_inquiry_label') ?: 'Send an Inquiry' }}</a>
         </div>
     </header>
     <main>@yield('content')</main>

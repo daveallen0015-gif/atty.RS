@@ -5,6 +5,7 @@
 
 @section('content')
     <div class="page-heading"><div><p class="eyebrow">Public website</p><h1>System Settings</h1></div></div>
+    @php($navigationDefaults = ['nav_brand_prefix' => 'ATTY.', 'nav_home_label' => 'Home', 'nav_about_label' => 'About Lawyer', 'nav_services_label' => 'Services', 'nav_laws_label' => 'Philippine Laws', 'nav_contact_label' => 'Contact', 'nav_portal_label' => 'Lawyer Portal', 'nav_dashboard_label' => 'Go to Dashboard', 'nav_inquiry_label' => 'Send an Inquiry'])
     <form method="POST" action="{{ route('admin.settings.update') }}" class="admin-form settings-editor" enctype="multipart/form-data" data-confirm-title="Save website settings?" data-confirm-message="Your website content and settings will be updated." data-confirm-button="Yes, save settings">
         @csrf
         @method('PUT')
@@ -25,7 +26,7 @@
                             @if ($isLongText)
                                 <textarea id="content_{{ $fieldKey }}" name="content[{{ $fieldKey }}]" rows="{{ $fieldKey === 'hero_body' || $fieldKey === 'about_body' ? 5 : 3 }}" class="form-control @error('content.'.$fieldKey) is-invalid @enderror">{{ old('content.'.$fieldKey, $contents->get($fieldKey)) }}</textarea>
                             @else
-                                <input id="content_{{ $fieldKey }}" name="content[{{ $fieldKey }}]" @if(str_starts_with($fieldKey, 'social_')) type="url" placeholder="https://..." @endif value="{{ old('content.'.$fieldKey, $contents->get($fieldKey)) }}" class="form-control @error('content.'.$fieldKey) is-invalid @enderror">
+                                <input id="content_{{ $fieldKey }}" name="content[{{ $fieldKey }}]" @if(str_starts_with($fieldKey, 'social_')) type="url" placeholder="https://..." @endif value="{{ old('content.'.$fieldKey, $contents->get($fieldKey, $navigationDefaults[$fieldKey] ?? '')) }}" class="form-control @error('content.'.$fieldKey) is-invalid @enderror">
                             @endif
                             @error('content.'.$fieldKey)<div class="invalid-feedback">{{ $message }}</div>@enderror
                         </div>
