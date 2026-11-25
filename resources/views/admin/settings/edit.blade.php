@@ -63,7 +63,7 @@
                         <h3>Navigation brand name</h3>
                         <p class="form-hint">Set the name shown beside the navigation logo. Leave blank to use the account name.</p>
                         <label for="content_nav_brand_name" class="form-label">Brand name</label>
-                        <input id="content_nav_brand_name" name="content[nav_brand_name]" value="{{ old('content.nav_brand_name', $contents->get('nav_brand_name', $navigationDefaults['nav_brand_name'])) }}" class="form-control @error('content.nav_brand_name') is-invalid @enderror" maxlength="255">
+                        <input id="content_nav_brand_name" name="content[nav_brand_name]" value="{{ old('content.nav_brand_name', $contents->get('nav_brand_name') ?: $navigationDefaults['nav_brand_name']) }}" class="form-control @error('content.nav_brand_name') is-invalid @enderror" maxlength="255">
                         @error('content.nav_brand_name')<div class="invalid-feedback">{{ $message }}</div>@enderror
                     </div>
                 @endif
